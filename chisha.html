@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html>
 <head>
 	<meta charset="UTF-8">
 	<title>吃啥</title>
@@ -35,14 +35,12 @@
 			100%{ -webkit-transform: scale(1); opacity: 1;}
 		}
 		.result{
-			width: 482px;
+			width: 100%;
 			height: 482px;
 			line-height: 482px;
 			text-align: center;
 			position: absolute;
 			top: 20px;
-			left: 50%;
-			margin-left: -240px;
 			font-size: 160px;
 			font-weight: bold;
 			opacity: 0;		
@@ -74,6 +72,7 @@
 			height: 45px;
 			margin: -25px 0 0 -22px;
 			cursor: pointer;
+			z-index: 10;
 		}
 		.section{
 			position: absolute;
@@ -113,33 +112,42 @@
 			-webkit-transform: rotate(-295deg);
 			line-height: 240px;
 		}
-		#section8{
+		#section0{
 			-webkit-transform: rotate(-325deg);
 		}
 	</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var wheel = $('#wheel');
+		$.getJSON('places.js', function(data) {
+			$.each(data, function(index, value) {
+				$('<div/>', {
+				    'class' : 'section',
+				    'id' : 'section' + index,
+				    html: value.name
+				  }).appendTo(wheel);
+			});
+			var sections = $('#wheel > .section');
+			var resultNum = Math.ceil(Math.random() * sections.length);
+			$('#result').html($(sections[resultNum - 1]).html());
+			$('#spinToggle').click(function() {
+				$('#wheel').addClass('spin');
+				window.setTimeout(function(){
+					$('#result').addClass('show');
+				}, 9300)
+			});
+		});
+		
+		
+	});
+		
+	</script>
 </head>
 <body>
-	<div id="result" class="result">良哥</div>
+	<div id="result" class="result"></div>
 	<div id="wheel" class="wheel">
-		<div id="section1" class="section">吉品湘</div>
-		<div id="section2" class="section">瀛田</div>
-		<div id="section3" class="section">良哥</div>
-		<div id="section4" class="section">云南味道</div>
-		<div id="section5" class="section">川滋味</div>
-		<div id="section6" class="section">蕉叶</div>
-		<div id="section7" class="section">富盈</div>
-		<div id="section8" class="section">桂林米粉</div>
 		<span id="spinToggle" class="button"></span>
 	</div>
-	
-<script type="text/javascript">
-document.getElementById('spinToggle').onclick = function(){
-	document.getElementById('wheel').className+=' spin';
-	window.setTimeout(function(){
-		document.getElementById('result').className+=' show';
-	}, 9300)
-	
-}
-</script>
 </body>
 </html>
